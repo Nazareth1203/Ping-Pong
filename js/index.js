@@ -19,6 +19,14 @@ var paddleX = (canvas.width - paddleWidth) / 2;
 var rightPressed = false;
 var leftPressed = false;
 
+var brickRowCount = 3;
+var brickColumnCount = 5;
+var brickWidth = 75 ;
+var brickHeight = 20;
+var brickPadding = 10;
+var brickOffsetTop = 30;
+var brickOffsetLeft = 30;
+
 // Agregar eventos de presionado y soltado de teclas
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -43,13 +51,28 @@ function keyUpHandler(event) {
 
 //Esta funcion dibuja una paleta
 function drawPaddle() {
-context.beginPath();
-context.rect(paddleX,canvas.height-paddleHeight, paddleWidth, paddleHeight);
-context.fillStyle = "#0095DD";
-context.fill();
-context.closePath();
-
+  context.beginPath();
+  context.rect(paddleX,canvas.height-paddleHeight, paddleWidth, paddleHeight);
+  context.fillStyle = "#0095DD";
+  context.fill();
+  context.closePath();
 }
+
+function drawBricks() {
+  for (var row = 0; row < brickRowCount; row++) {
+    for (var colum = 0; colum < brickColumnCount; colum++) {
+     var brickX = (colum *(brickWidth + brickPadding)) + brickOffsetLeft;
+     var brickY = (row *(brickHeight + brickPadding)) + brickOffsetTop;
+
+     context.beginPath();
+      context.rect(brickX, brickY, brickWidth, brickHeight);
+      context.fillStyle = "#0095DD";
+      context.fill();
+      context.closePath();
+
+     }
+   }
+  }
 
 // Esta funcion dibuja un circulo en la posicion x, y
 function drawBall() {
@@ -60,8 +83,11 @@ function drawBall() {
   context.closePath();
 }
 
+
 function draw() {
   context.clearRect(0, 0, canvas.width, canvas.height);
+
+drawBricks();
 
   // Se llama a la funcion de dibujar un circulo
   drawBall();
@@ -79,10 +105,11 @@ function draw() {
 } else if (y + dy > canvas.height - ballRadius) {
   if (x > paddleX && paddleX + paddleWidth){
     dy = -dy;
-  } else {
-      alert("JAMAS PODRAS :3");
-      document.location.reload();
   }
+  // else {
+  //     alert("JAMAS PODRAS :3");
+  //     document.location.reload();
+  // }
 }
 
   // verificar si se toco la tecla direccional derecha
